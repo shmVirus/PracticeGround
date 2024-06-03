@@ -136,10 +136,9 @@ void main() {
     print('\x1B[38;5;43mLabels\x1B[0m');
     myLabel: {
         stdout.writeln('This is inside the Labeled Block\n');
-        // Simulating an early exit from the block
-        break myLabel;
-        // continue can be only used with loop
-        // This line will never be executed
+        // simulating an early exit from the block
+        break myLabel; // continue can be only used with loop
+        // this line will never be executed
         stdout.writeln('This line Will not be Printed\n');
     }
 
@@ -164,21 +163,21 @@ void main() {
     // Set: an unordered collection of unique items
     Set<String> windowManagers = {'i3', 'bspwm', 'awesome'};
     stdout.writeln("Set of Window Managers: $windowManagers");
-    // Map: A collection of key-value pairs
+    // Map: a collection of key-value pairs
     Map<String, String> commands = {
         'ls': 'list directory contents',
         'cd': 'change directory'
     };
     stdout.writeln("Map of Commands: $commands");
-    // Queue: An ordered collection of items
+    // Queue: an ordered collection of items
     Queue<int> queue = Queue();
     queue.addAll([1, 2, 3, 4, 5]);
     stdout.writeln("Queue of Numbers: $queue");
-    // Runes: For Unicode characters
+    // Runes: for Unicode characters
     Runes input = Runes('I \u2764 Linux');
     String unicodeString = String.fromCharCodes(input);
     stdout.writeln("Unicode String: $unicodeString");
-    // Symbol: Used to refer to identifiers
+    // Symbol: used to refer to identifiers
     Symbol symbol = #linuxSymbol;
     stdout.writeln("Symbol: $symbol\n");
 
@@ -260,19 +259,21 @@ void main() {
     /// Functions
     print('\x1B[38;5;43mFunction Types\x1B[0m');
     // Normal Function
-    stdout.writeln("Addition (Normal function): ${add(2, 3)}");
+    stdout.writeln("Addition with Normal Function: ${add(2, 3)}");
+    // Nested Function
+    stdout.writeln("Addition with Nested Function: ${outerNested(15)}");
     // Optional Parameters
-    stdout.writeln("Addition with optional parameter: ${optionalParams(2, 3)}");
+    stdout.writeln("Addition with Optional Parameter: ${optionalParams(2, 3)}");
     // Named Parameters
-    stdout.writeln("Addition with named parameters: ${namedParams(x: 2, y: 3)}");
-    // Anonymous - function that has no name
-    stdout.writeln("Anonymous function to print list items:");
+    stdout.writeln("Addition with Named Parameters: ${namedParams(x: 2, y: 3)}");
+    // Anonymous - function without a name, often used as an argument in higher-order functions
+    stdout.writeln("Anonymous Function to Print Items:");
     windowManagers.forEach((item) {
         stdout.writeln(item);
     });
-    // Arrow - shorthand syntax for anonymous functions
+    // Arrow - concise function definition using `=>` for single expressions
     var doubled = windowManagers.map((item) => item + ' doubled');
-    stdout.writeln("Arrow function to double list items:\n$doubled\n");
+    stdout.writeln("Arrow Function to Double list Items:\n$doubled\n");
     // Exit
     // exit(0); // exits the program
 
@@ -342,25 +343,30 @@ void main() {
     stdout.writeln('Thread: This line prints first');
 }
 
-// Enum
+// Enums custom data type with a limited set of possible values
 enum Status { approved, rejected, pending }
 
-// Normal Function
+// Normal Function: collections of statements, can be nested
 int add(int x, int y) {
     return x + y;
 }
-
-// Optional Parameters
+// Nested Function: functions defined within other functions
+int outerNested (int x) {
+    int innerNested (int x) {
+        return x + 10;
+    }
+    return innerNested(x);
+}
+// Optional Parameters: parameters that may or may not be provided
 int optionalParams(int x, [int? y]) {
     return x + (y ?? 0);
 }
-
-// Named Parameters
+// Named Parameters: parameters identified by name; by default optional, requires required for mandatory paramters
 int namedParams({required int x, required int y}) {
     return x + y;
 }
 
-// Exception Handling
+// Exception Handling: process of catching and managing runtime errors to prevent program crashes
 void divide(int a, int b) {
     try {
         if (b == 0) {
