@@ -282,23 +282,64 @@ void main() {
     divide(10, 0);
     stdout.writeln();
 
-    /// Asynchronus Programming
-    print('\x1B[38;5;43mAsync and Await\x1B[0m');
+    /// OOP Concepts
+    stdout.writeln('\x1B[38;5;43mOOP Examples\x1B[0m');
+    // Object: Instance of a class
+    var penguin = LinuxUser(username: 'Tux', uptime: 2048);
+    penguin.greet();
+    stdout.writeln("Username from Getter: ${penguin.username}"); // accessing private variable using getter
+    // Accessing static propterties/methods
+    stdout.writeln('Static method Result: ${LinuxUser.calculateUptime(1995)}'); // calls a static method of LinuxUser
+    // Using a Mixin and Polymorphism
+    List<LinuxUser> users = [
+        LinuxUser(username: 'Tux', uptime: 2048),
+        AdvancedLinuxUser(username: 'AdvancedTux', uptime: 4096)
+    ];
+    stdout.writeln("Polymorphism Example:");
+    for (var user in users) {
+        user.greet(); // polymorphism: behaves differently based on the object
+    }
+    // Abstract class
+    var myComputer = LinuxComputer();
+    myComputer.turnOn(); // calls the implemented abstract method
+    myComputer.turnOff(); // calls the implemented abstract method
+    // Interface
+    var diskCleanup = AdvancedDiskCleanup();
+    diskCleanup.cleanDisk(); // calls the method from the interface implementation
+    // Callable class
+    var callableInstance = CallableClass();
+    stdout.writeln("Callable class Result: ${callableInstance(3, 4)}"); // Demonstrates callable class
+    // Generic class
+    var genericString = GenericClass<String>('Hello, Linux!');
+    genericString.showType(); // demonstrates generic class with String type
+    var genericInt = GenericClass<int>(42);
+    genericInt.showType(); // demonstrates generic class with int type
+    // Singleton class
+    var singleton1 = LinuxSingleton.getInstance();
+    var singleton2 = LinuxSingleton();
+    stdout.writeln('Singleton instances are the same: ${singleton1 == singleton2}');
+    // Builder pattern
+    var myLaptop = LinuxLaptopBuilder()
+        .setBrand('ThinkPad X1 Yoga')
+        .setRam(16)
+        .setStorage(512)
+        .build();
+    stdout.writeln("Built Laptop: ${myLaptop.details()}"); // uses the builder pattern to create an object
+    stdout.writeln();
+
+    /// Asynchronus Programming and Threading
+    // Asynchronus Programming
+    print('\x1B[38;5;43mAsynchronus Programming and Threading\x1B[0m');
     // async - used to define an asynchronous function, allows to use await
     // await - used to pause the execution of an async function
     fetchData();
-    stdout.writeln();
-
-
     /// Threading
-    print('\x1B[38;5;43mThreading\x1B[0m');
-    stdout.writeln('Starting long running task...');
+    stdout.writeln('Thread: Starting long running task...');
     Future<void> longRunningTask = Future.delayed(Duration(seconds: 3), () {
-        stdout.writeln('Task complete!');
+        stdout.writeln('Thread: Task complete!');
     });
-    longRunningTask.then((_) => stdout.writeln('Done waiting!'));
-    stdout.writeln('This line prints first');
-    stdout.writeln();
+    longRunningTask.then((_) => stdout.writeln('Thread: Done waiting!'));
+    stdout.writeln('Thread: This line prints first');
 }
 
 // Enum
@@ -332,9 +373,172 @@ void divide(int a, int b) {
     }
 }
 
+// Class: blueprint for creating objects with properties and methods, encapsulating data and behavior
+class LinuxUser {
+    // Instance Properties
+    String _username; // Private variable: accessible only within this class
+    int uptime; // Public variable: accessible from outside of class
+    // Instance Methods
+    void greet() {
+        stdout.writeln('Hello, my name is $_username and my system uptime is $uptime hours');
+    }
+
+    // Constructor: initializes an instance of the class
+    // Factory Constructors: creates instances with custom logic, may return existing instances
+    // Const Constructors: creates compile-time constant, immutable instances
+    // Private Constructors: prevents instantiation from outside the library using an underscore (_)
+    LinuxUser({required String username, required this.uptime})
+        // Initializer List: used to initialize instance variables before running constructor
+        : _username = username {
+        // constructor body
+        stdout.writeln('Creating a LinuxUser instance with username: $_username and uptime: $uptime');
+    }
+
+    // Encapsulation: ides internal state and requires interaction through methods
+    // Getter: provides read access to private properties
+    String get username => _username;
+    // Setter: provides write access to private properties
+    set username(String username) {
+        _username = username;
+    }
+
+    // Static Property: belongs to the class, not instances
+    static String species = 'Penguin'; // can be accessed with class
+    // Static Method: belongs to the class, not instances
+    static int calculateUptime(int birthYear) {
+        return DateTime.now().year - birthYear;
+    }
+}
+
+// Mixin: reusable code that can be mixed into multiple classes
+mixin AdvancedFeatures {
+    void showAdvancedInfo() {
+        stdout.writeln('Using Advanced Linux features');
+    }
+}
+
+/// Association: relationship between two classes
+// Aggregation: child can exist independently of the parent
+// Composition: child cannot exist independently of the parent
+// Dependency: one class depends on another for a specific purpose
+// Delegation: an object handles a request by passing it to a second object
+
+/// Association Keywords
+// extends: inherits properties and methods from a superclass
+// with: mixes properties and methods from a mixin to a class
+// implements: enforces the implementation of an interface's methods and properties
+
+// Example of Mixins and Polymorphism
+class AdvancedLinuxUser extends LinuxUser with AdvancedFeatures {
+    AdvancedLinuxUser({required String username, required int uptime})
+        // Inheritance: subclass inherits properties and methods from superclass
+        : super(username: username, uptime: uptime);
+
+    // Polymorphism: same method call on different objects, each responds uniquely
+    // Method Overloading: multiple methods with the same name but different parameters in one class (Not Supported in Dart)
+    // Operator Overloading: custom implementation for standard operators
+    @override
+    void greet() {
+        // Method Overriding: subclass implements a method defined in its superclass
+        stdout.writeln('Hello, my name is $username, an advanced user, and my system uptime is $uptime hours');
+    }
+}
+
+// Abstract Class: cannot be instantiated; must be subclassed
+abstract class LinuxDevice {
+    // Abstraction: hides complex implementation, shows only essential features
+    void turnOn(); // abstract method
+    void turnOff(); // abstract method
+}
+// Implementation of an Abstract class
+class LinuxComputer extends LinuxDevice {
+    @override
+    void turnOn() {
+        stdout.writeln('Linux computer is now ON');
+    }
+
+    @override
+    void turnOff() {
+        stdout.writeln('Linux computer is now OFF');
+    }
+}
+
+// Interface: contract specifying methods and properties a class must implement
+class DiskCleanup {
+    void cleanDisk() {
+        stdout.writeln('Cleaning up disk space...');
+    }
+}
+// Implementation of an Interface
+class AdvancedDiskCleanup implements DiskCleanup {
+    @override
+    void cleanDisk() {
+        stdout.writeln('Advanced disk cleanup in progress...');
+    }
+}
+
+// Callable Class: allows an instance to be called as a function
+class CallableClass {
+    int call(int a, int b) => a + b;
+}
+
+// Generic Class: allows classes to operate on different data types
+class GenericClass<T> {
+    T value;
+    GenericClass(this.value);
+    void showType() {
+        stdout.writeln('The Type of Value is ${value.runtimeType}');
+    }
+}
+
+// Singleton: ensures a class has only one instance and provides a global access point
+class LinuxSingleton {
+    static final LinuxSingleton _instance = LinuxSingleton._internal();
+    // factory - defines a constructor that can return an instance
+    factory LinuxSingleton() {
+        return _instance;
+    }
+    LinuxSingleton._internal();
+    static LinuxSingleton getInstance() {
+        return _instance;
+    }
+}
+
+// Product Class: represents complex object that is being built
+class LinuxLaptop {
+    final String brand;
+    final int ram;
+    final int storage;
+    LinuxLaptop(this.brand, this.ram, this.storage);
+    String details() {
+        return 'Brand: $brand, RAM: ${ram}GB, Storage: ${storage}GB';
+    }
+}
+// Builder Class: class used to construct instances of product class
+class LinuxLaptopBuilder {
+    String? _brand;
+    int? _ram;
+    int? _storage;
+    LinuxLaptopBuilder setBrand(String brand) {
+        _brand = brand;
+        return this;
+    }
+    LinuxLaptopBuilder setRam(int ram) {
+        _ram = ram;
+        return this;
+    }
+    LinuxLaptopBuilder setStorage(int storage) {
+        _storage = storage;
+        return this;
+    }
+    LinuxLaptop build() {
+        return LinuxLaptop(_brand ?? 'Unknown', _ram ?? 0, _storage ?? 0);
+    }
+}
+
 // Async and Await
 Future<void> fetchData() async {
-    print('Fetching data...');
+    print('Async: Fetching data...');
     await Future.delayed(Duration(seconds: 2));
-    print('Data fetched');
+    print('Async: Data fetched');
 }
