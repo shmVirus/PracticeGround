@@ -401,7 +401,7 @@ class LinuxUser {
         stdout.writeln('Creating a LinuxUser instance with username: $_username and uptime: $uptime');
     }
 
-    // Encapsulation: ides internal state and requires interaction through methods
+    // Encapsulation: hides internal state and requires interaction through methods
     // Getter: provides read access to private properties
     String get username => _username;
     // Setter: provides write access to private properties
