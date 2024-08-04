@@ -12,6 +12,8 @@ class Person {
 }
 
 class MyClass {
+    /// OOP
+
     var myName = "Rabbil Hasan"; // Property
     int addTwoNumber (var a, var b) { // Method
         return a + b;
