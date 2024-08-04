@@ -16,6 +16,7 @@ int multiply(int a, int b) => a * b; // arrow function - contains single express
 
 void main () {
     /// Functions
+
     greet('Alice');
     greet('Alice', 'Ms.');
     anotherGreet(name : 'Alice');
@@ -24,7 +25,7 @@ void main () {
 
     print('\x1B[38;5;43mfrom Slide\x1B[0m');
     print(myFunc(10,15));
-    
+
     print('\x1B[38;5;159mfrom Recording\x1B[0m');
     addTwoNumbers();
 }
